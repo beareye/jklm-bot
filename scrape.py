@@ -21,7 +21,9 @@ time.sleep(1) # Wait for response
 
 # set Nickname
 name_box = driver.find_element_by_css_selector("form input")
+name_box.send_keys(Keys.BACKSPACE)
 name_box.send_keys(settings["Nickname"])
+time.sleep(1)
 search_box = driver.find_element_by_css_selector("form button")
 search_box.click()
 
@@ -40,13 +42,10 @@ while (True):
         print("JOINED ROUND")
     if driver.find_element_by_css_selector("form input").is_displayed():
         syllable=driver.find_element_by_class_name("syllable").text
-        result = scrape_utils.randomWord(syllable, "words.txt")
+        result = scrape_utils.bestWord(syllable, "words.txt")
         print(result)
-        input = driver.find_element_by_css_selector("form input")
-        scrape_utils.outputWord(input, result, driver)
-        
-
-        
-
+        inputElem = driver.find_element_by_css_selector("form input")
+        scrape_utils.outputWordWithTypos(inputElem, result, driver)
+        scrape_utils.outputWordRestartAfterMistake(inputElem, result, driver)
 
 #driver.quit()
