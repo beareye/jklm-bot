@@ -6,7 +6,6 @@ import scrape_utils
 # load settings file
 global settings
 global driver
-inGame = False
 
 with open("./settings.json", "r") as settings_file:
     settings = json.load(settings_file)
@@ -15,11 +14,13 @@ print(settings)
 driver = webdriver.Chrome()
 
 # open the window
+print("opening window")
 driver.get('https://jklm.fun/'+settings["Lobby Code"])
 
 time.sleep(1) # Wait for response
 
 # set Nickname
+print("setting nickname")
 name_box = driver.find_element_by_css_selector("form input")
 name_box.send_keys(Keys.BACKSPACE)
 name_box.send_keys(settings["Nickname"])
@@ -34,6 +35,7 @@ time.sleep(5)
 driver.switch_to_frame(driver.find_element_by_tag_name("iframe"))
 
 # Play Game
+print("playing game")
 syllable = ""
 while (True):
     time.sleep(1)
@@ -42,10 +44,21 @@ while (True):
         print("JOINED ROUND")
     if driver.find_element_by_css_selector("form input").is_displayed():
         syllable=driver.find_element_by_class_name("syllable").text
+        print("Received text: " + syllable)
         result = scrape_utils.bestWord(syllable, "words.txt")
-        print(result)
+        print("Targeted next word: " + result)
         inputElem = driver.find_element_by_css_selector("form input")
-        scrape_utils.outputWordWithTypos(inputElem, result, driver)
-        scrape_utils.outputWordRestartAfterMistake(inputElem, result, driver)
+
+        if (scrape_utils.flipAWeightedCoin(0.33)):
+            scrape_utils.outputWordWithTypos(inputElem, result, driver)
+        elif (scrape_utils.flipAWeightedCoin()):
+            scrape_utils.outputWordRestartAfterMistake(inputElem, result, driver)
+        else:
+            scrape_utils.outputWordBackspaces(inputElem, result, driver)
+        scrape_utils.outputWord(inputElem,result, driver)
+        print()
+        print()
+        print("="*80)
+        
 
 #driver.quit()
