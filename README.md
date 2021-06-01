@@ -1,6 +1,6 @@
 <h1>Bot that plays bomb party</h1>
 
-<h2>Requirements: Python3, Selenium</h2>
+<h2>Requirements: Python3, Selenium, Chromedriver</h2>
 
 How to use:
 
