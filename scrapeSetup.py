@@ -1,6 +1,6 @@
 import json
 
-settingsTitleList = ["Nickname", "Delay (in seconds)", "Lobby Code"]
+settingsTitleList = ["Nickname", "Lobby Code", "Profile Pic"]
 settings = {}
 for settingsName in settingsTitleList:
     print("Enter " + settingsName + ": ")
